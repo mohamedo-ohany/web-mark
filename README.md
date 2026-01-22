@@ -26,7 +26,7 @@ A modern bookmark manager built with React and Material-UI. Save, organize, and 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/web-mark.git
+git clone https://github.com/mohamedo-ohany/web-mark.git
 
 # Navigate to project directory
 cd web-mark
@@ -38,7 +38,7 @@ npm install
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`
+The app will be available at `https://mohamedo-ohany-web-mark.netlify.app/`
 
 ### Build for Production
 
@@ -54,6 +54,14 @@ npm run build
 | [Material-UI v7](https://mui.com/) | Component Library |
 | [Vite](https://vite.dev/) | Build Tool |
 | [UUID](https://www.npmjs.com/package/uuid) | Unique ID Generation |
+
+### React Hooks Used
+
+- **useState** — Managing component state (dialogs, snackbar, filters)
+- **useEffect** — Syncing localStorage and form data
+- **useReducer** — Centralized state management for bookmarks
+- **useRef** — Referencing delete dialog target
+- **useMemo** — Optimizing filtered bookmark calculations
 
 ## 📁 Project Structure
 

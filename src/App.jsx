@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useReducer } from "react";
+import { useState, useEffect, useMemo, useReducer, useRef } from "react";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -14,7 +14,7 @@ import DeleteDialog from "./components/DeleteDialog.jsx";
 import webMarkReducer from "./reducers/WebMarkReducer.jsx";
 function App() {
   const [webMarks, dispatch] = useReducer(webMarkReducer, [], () => {
-    // const storedWebMarks = localStorage.getItem("webMarks");
+    // get data from localstorage
     if (localStorage.getItem("webMarks")) {
       return JSON.parse(localStorage.getItem("webMarks"));
     } else {
@@ -38,18 +38,18 @@ function App() {
   // delete web mark
 
   const [DeleteDialogopen, setDeleteDialogopen] = useState(false);
-  const [currentDeleteId, setCurrentDeleteId] = useState(null);
+  const currentDeleteId = useRef(null);
 
   function handleDeleteDialogOpen(id) {
-    setCurrentDeleteId(id);
+    currentDeleteId.current = id;
     setDeleteDialogopen(true);
   }
   function deleteWebMark() {
-    dispatch({ type: "delete", payload: { id: currentDeleteId } });
+    dispatch({ type: "delete", payload: { id: currentDeleteId.current } });
     setSnackOpen(true);
     setSnackTitle("Web mark deleted successfully!");
     handleDeleteDialogClose();
-    setCurrentDeleteId(null);
+    currentDeleteId.current = null;
   }
   function handleDeleteDialogClose() {
     setDeleteDialogopen(false);
@@ -62,15 +62,14 @@ function App() {
     setFormDialogOpen(false);
   }
   function handleEdit(markedData) {
-    setCurrentDeleteId(markedData.id);
+    currentDeleteId.current = markedData.id;
     setWebEnvo({ name: markedData.title, link: markedData.link });
-
     setFormDialogOpen(true);
   }
   function editWebMark(updatedData) {
     dispatch({
       type: "edit",
-      payload: { id: currentDeleteId, data: updatedData },
+      payload: { id: currentDeleteId.current, data: updatedData },
     });
     setSnackOpen(true);
     setSnackTitle("Web mark edited successfully!");
@@ -92,6 +91,7 @@ function App() {
       return webMarks.filter((webMark) => !webMark.opened);
     }
   }, [displayed, webMarks]);
+  // sync webMarks to localStorage
   useEffect(() => {
     localStorage.setItem("webMarks", JSON.stringify(webMarks));
   }, [webMarks]);
